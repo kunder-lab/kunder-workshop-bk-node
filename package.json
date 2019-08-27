@@ -1,0 +1,23 @@
+{
+  "name": "kunder-workshop-bk-node",
+  "version": "0.1.0",
+  "description": "Kunder Backend Workshop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kunder-lab/kunder-workshop-bk-node.git"
+  },
+  "author": "Kunder Spa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kunder-lab/kunder-workshop-bk-node/issues"
+  },
+  "homepage": "https://github.com/kunder-lab/kunder-workshop-bk-node#readme",
+  "dependencies": {
+    "express": "4.17.1"
+  }
+}
