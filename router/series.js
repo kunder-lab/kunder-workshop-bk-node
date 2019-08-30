@@ -1,24 +1,44 @@
-var express = require('express')
-var router = express.Router()
+var express = require('express');
+var fetch = require('node-fetch');
+var router = express.Router();
 
+var baseUrl = 'http://demo7835208.mockable.io/';
 
-//Get all series
+//Get all series from url
 router.get('/', function (req, res) {
-  res.status(200).json({ msg: 'ok' })
+  //TODO
+  //filter by category
+  fetch(baseUrl + 'series', { method: 'get', headers: { 'Content-Type': 'application/json'}})
+    .then(res => res.json())
+    .then(json => {
+      return res.status(200).json(json)
+    })
+    .catch(err => {
+      return res.status(500).json(err)
+    }
+  );
 });
 
-//Get serie information and episodes
-router.get('/:serieId', function (req, res) {
+//Get series information and episodes
+router.get('/:seriesId', function (req, res) {
+  //TODO
+  //read from service
   res.status(200).json({ msg: req.params })
 });
 
-//Save series as liked
-router.post('/:serieId', function (req, res) {
+//save episode as watched
+//body: userId
+router.post('/:seriesId/episode/:episodeId', function (req, res) {
+  //TODO
+  //connection to db
   res.status(200).json({ msg: req.params })
 });
 
-//Save episode as seen
-router.post('/:serieId/episode/:episodeId', function (req, res) {
+//delete episode as watched
+//body: userId
+router.delete('/:seriesId/episode/:episodeId', function (req, res) {
+  //TODO
+  //connection to db
   res.status(200).json({ msg: req.params })
 });
 
