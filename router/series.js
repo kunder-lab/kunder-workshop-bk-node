@@ -66,23 +66,27 @@ router.get('/:seriesId', function (req, res) {
 //save episode as watched
 //body: userId
 router.post('/:seriesId/episode/:episodeId', function (req, res) {
-    var sqlSelect="select id from users_watched where user_id = 1 and serie_id =" + req.params.seriesId + " and episode_id =" + req.params.episodeId;
-    con.query(sqlSelect, function (err, result) {
-        if (err) throw err;
-        console.log("Result: " + result);
-        if (result.length ===0) {
-            var sql = "insert into users_watched(user_id, serie_id, episode_id) values(1, " + req.params.seriesId + ", " + req.params.episodeId + ")";
-            console.log(sql);
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-                res.status(201).json({ msg: "Acabas de ver este episodio eeee"})
-            });
-        }
-        else {
-            res.status(200).json({ msg: "Ya viste este VHS" })
-        }
-    });
+    if(req.body.userId){
+        var sqlSelect="select id from users_watched where user_id ="+ req.body.userId +" and serie_id =" + req.params.seriesId + " and episode_id =" + req.params.episodeId;
+        con.query(sqlSelect, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+            if (result.length ===0) {
+                var sql = "insert into users_watched(user_id, serie_id, episode_id) values("+ req.body.userId +", " + req.params.seriesId + ", " + req.params.episodeId + ")";
+                console.log(sql);
+                con.query(sql, function (err, result) {
+                    if (err) throw err;
+                    console.log("Result: " + result);
+                    res.status(201).json({ msg: "Acabas de ver este episodio eeee"})
+                });
+            }
+            else {
+                res.status(200).json({ msg: "Ya viste este VHS" })
+            }
+        });
+    } else {
+        res.status(400).json({ msg : "Falta userId"})
+    }
   //TODO
   //connection to db
 
@@ -91,23 +95,26 @@ router.post('/:seriesId/episode/:episodeId', function (req, res) {
 //delete episode as watched
 //body: userId
 router.delete('/:seriesId/episode/:episodeId', function (req, res) {
-    var sqlSelect="select id from users_watched where user_id = 1 and serie_id =" + req.params.seriesId + " and episode_id =" + req.params.episodeId;
-    con.query(sqlSelect, function (err, result) {
-        if (err) throw err;
-        console.log("Result: " + result);
-        if (result.length ===1) {
-            var sql = "delete from users_watched where id =" + result[0].id;
-            console.log(sql);
-            con.query(sql, function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-                res.status(204).json();
-            });
-        }
-        else {
-            res.status(404).json({ msg: "Aún no has visto este episodio, no lo puedes borrar" })
-        }
-    });
+    if(req.body.userId) {
+        var sqlSelect = "select id from users_watched where user_id = " + req.body.userId + " and serie_id =" + req.params.seriesId + " and episode_id =" + req.params.episodeId;
+        con.query(sqlSelect, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+            if (result.length === 1) {
+                var sql = "delete from users_watched where id =" + result[0].id;
+                console.log(sql);
+                con.query(sql, function (err, result) {
+                    if (err) throw err;
+                    console.log("Result: " + result);
+                    res.status(204).json();
+                });
+            } else {
+                res.status(404).json({msg: "Aún no has visto este episodio, no lo puedes borrar"})
+            }
+        });
+    } else {
+        res.status(400).json({ msg : "Falta userId"})
+    }
   //connection to db
 });
 
